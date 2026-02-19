@@ -20,16 +20,21 @@ void limparBuffer() { //Limpar buffer após scanf
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
+int contarDigitos(int num){
+    int count = 0;
+    if(num == 0) return 1; // caso o número seja 0, tem 1 dígito
+    while(num != 0){
+        num /= 10; // remove o último dígito
+        count++; // incrementa a contagem
+    }
+    return count;
+}
+
 int Lerinfo(Biblioteca *livro, int linhas, FILE *bib){
     Biblioteca *temp = malloc(linhas * sizeof(Biblioteca));
+    int num = contarDigitos(livro->codigo);
     for(int i = 0; i < linhas; i++){
-    
-    fscanf(bib, "%d;%[^;];%[^;];%d;%d\n",
-           &temp[i].codigo,
-           temp[i].titulo,
-           temp[i].autor,
-           &temp[i].anoPublicacao,
-           &temp[i].quantidadedisp);
+        fscanf(bib, "%d;%[^;];%[^;];%d;%d\n", &temp[i].codigo, temp[i].titulo, temp[i].autor, &temp[i].anoPublicacao, &temp[i].quantidadedisp);
     }
 
 
@@ -45,6 +50,14 @@ int Lerinfo(Biblioteca *livro, int linhas, FILE *bib){
             free(temp);
             getchar();
             return 1;
+        }
+        else{
+            if(num > 3){
+                printf("Codigo invalido!\nDigite apenas 3 digitos.\n");
+                free(temp);
+                getchar();
+                return 1;
+            }
         }
     }
 
@@ -79,7 +92,7 @@ void cadastrarLivro(Biblioteca livro, FILE *arq){
 
     fprintf(arq, "%d;%s;%s;%d;%d\n", livro.codigo, livro.titulo, livro.autor, livro.anoPublicacao, livro.quantidadedisp);
 }
-
+//Fazer com que a pesquise seja feita independente de letras maiusculas ou minusculas
 void pesquisarPorAutor(char autorPesquisa[], FILE *arq){
     int encontrado = 0, tamanhoau, tamanhoti, diferencaau, diferencati, i = 0;
     removerLinhas(autorPesquisa);
@@ -112,7 +125,7 @@ void pesquisarPorAutor(char autorPesquisa[], FILE *arq){
 
     fclose(arq);
 }
-
+//Fazer com que a pesquise seja feita independente de letras maiusculas ou minusculas
 void pesquisarPorTitulo(char tituloPesquisa[], FILE *arq){
     int encontrado = 0, tamanhoau, tamanhoti, diferencaau, diferencati, i = 0;
     removerLinhas(tituloPesquisa);
