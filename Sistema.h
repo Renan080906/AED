@@ -23,7 +23,7 @@ void listarLivros(int linhas, FILE *arq);
 void pesquisarPorAutor(char autorPesquisa[], FILE *arq);
 void pesquisarPorTitulo(char tituloPesquisa[], FILE *arq);
 void registrarEmprestimo(Emprestimo emprestimo, int codigoLivro, FILE *arqemp);
-void registrarDevolucao(int codigoLivro, char Leitor[100], FILE *arq, int NumeroEmprestimos);
+void registrarDevolucao(int codigoLivro, char Leitor[100], FILE *arq);
 void relatorioEmprestimos();
 
 

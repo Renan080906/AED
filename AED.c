@@ -5,7 +5,6 @@
 
 int main(){
     FILE *arq;
-    FILE *arqemp;
     Biblioteca p;
     int decisao;
     int sair = 1;
@@ -141,15 +140,9 @@ int main(){
                 fgets(auxiliar, sizeof(auxiliar), stdin);
                 auxiliar[strcspn(auxiliar, "\n")] = 0; // remove o /n
 
-                arqemp = fopen("emprestimos.txt", "r"); //abre para contar linhas
-                while(fgets(auxiliar, sizeof(auxiliar), arqemp) != NULL)
-                {
-                    linhas++;
-                }
-                fclose(arqemp);
-
                 // chama a função registrar Devolução
-                registrarDevolucao(codigo, auxiliar, NULL, linhas);
+                registrarDevolucao(codigo, auxiliar, NULL);
+                getchar();
                 break;
             case 6:
                 limparTela();

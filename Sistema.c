@@ -203,7 +203,7 @@ void registrarEmprestimo(Emprestimo e, int codigoLivro, FILE *arqemp){
     printf("Emprestimo registrado com sucesso!\n");
 }
 
-void registrarDevolucao(int codigoLivro, char Leitor[100], FILE *arq, int NumeroEmprestimos){
+void registrarDevolucao(int codigoLivro, char Leitor[100], FILE *arq){
     FILE *tempArq;         // Arquivo temporário para reescrever os dados
     FILE *emp;
     FILE *tempEmp;           // Arquivo temporário para reescrever os empréstimos
@@ -220,7 +220,7 @@ void registrarDevolucao(int codigoLivro, char Leitor[100], FILE *arq, int Numero
     // Lê o arquivo linha por linha
     while(fscanf(arq, "%d;%[^;];%[^;];%d;%d\n", &livro.codigo, livro.titulo, livro.autor, &livro.anoPublicacao, &livro.quantidadedisp) != EOF){
 
-        while(fscanf(emp, "%d;%[^;];%[^;]\n", &emprestimo.codigoLivro, emprestimo.nomeLeitor, emprestimo.data) == NumeroEmprestimos){
+        while(fscanf(emp, "%d;%[^;];%s\n", &emprestimo.codigoLivro, emprestimo.nomeLeitor, emprestimo.data) != EOF){
             if(emprestimo.codigoLivro != codigoLivro && strcmp(emprestimo.nomeLeitor, Leitor) != 0){
                 fprintf(tempEmp, "%d;%s;%s\n", emprestimo.codigoLivro, emprestimo.nomeLeitor, emprestimo.data);
             }
@@ -257,8 +257,6 @@ void registrarDevolucao(int codigoLivro, char Leitor[100], FILE *arq, int Numero
     rename("temp.txt", "biblioteca.txt");
     remove("emprestimos.txt");
     rename("tempEmp.txt", "emprestimos.txt");
-
-    getchar();
 }
 
 void relatorioEmprestimos(){
