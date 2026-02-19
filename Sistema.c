@@ -20,7 +20,6 @@ void limparBuffer() { //Limpar buffer após scanf
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
-
 int Lerinfo(Biblioteca *livro, int linhas, FILE *bib){
     Biblioteca *temp = malloc(linhas * sizeof(Biblioteca));
     for(int i = 0; i < linhas; i++){
@@ -270,28 +269,25 @@ void relatorioEmprestimos(){
     }
 
     Emprestimo e;   // struct Emprestimo pra guardar temporariamente os dados
-    int codigo;     // guarda o código do livro lido do arquivo
+    int codigo, tamanho, diferenca, esquerda, direita, i = 1;     // guarda o código do livro lido do arquivo
 
-    printf("\n======= RELATORIO DE EMPRESTIMOS =======\n\n");
+    printf("========= RELATORIO DE EMPRESTIMOS ==========\n");
 
-    while(fscanf(arq, "%d;%99[^;];%19[^\n]\n",
-                 &codigo,
-                 e.nomeLeitor,
-                 e.data) != EOF){
+    printf("%-3s | %-3s | %*s%s%*s | %*s%s%*s\n", "ID", "Cod", 3, "", "Nome do Leitor", 3, "", 3, "", "Data", 3, "");
+    printf("---------------------------------------------\n");
 
-        // Mostro os dados na tela
-        printf("Codigo do livro: %d\n", codigo);
-        printf("Nome do leitor: %s\n", e.nomeLeitor);
-        printf("Data: %s\n", e.data);
-        printf("-------------------------------------\n");
+    while(fscanf(arq, "%d;%[^;];%s\n", &codigo, e.nomeLeitor, e.data) != EOF){
+        tamanho = strlen(e.nomeLeitor);
+        diferenca = 20 - tamanho;
+        esquerda = diferenca / 2;
+        direita = diferenca - esquerda;
+        printf("%-3d | %-3d | %*s%s%*s | %-10s\n", i, codigo, esquerda, "", e.nomeLeitor, direita, "", e.data);
+        i++;
     }
 
     // Fecha o arquivo
     fclose(arq);
-
-    printf("\n=============   FIM   =============\n\n");
 }
-
 
 void listarLivros(int linhas, FILE *arq){
     arq = fopen("biblioteca.txt", "r"); //abre o arquivo
